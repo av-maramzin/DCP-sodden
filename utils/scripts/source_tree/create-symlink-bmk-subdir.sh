@@ -117,7 +117,6 @@ for BMK_SUBDIR in ${BMK_SUBDIRS[@]}; do
 done
 echo ""
 
-
 # operations
 
 # check if out dir location is given in relative form
@@ -130,44 +129,89 @@ readarray BENCHMARKS < ${BMK_CONFIG_FILE}
 for BMK in "${BENCHMARKS[@]}"; do
   # trim whitespace
   BMK=$(echo $BMK | xargs)
-
+    
   # 2 modes of operation
   if [ "$BMK_RM_LINKS" -eq 0 ]; then
     # mode: create symlinks, if targets exist
+    
+    ABSOLUTE_BMK_DIR="${BMK_SOURCE_DIR}/${BMK}"
 
-    for BMK_SUBDIR in "${BMK_SUBDIRS[@]}"; do
-      # trim whitespace
-      BMK_SUBDIR=$(echo $BMK_SUBDIR | xargs)
+    # check for the original benchmark implementation
+    ORIGINAL_BMK_IMPL_DIR="${ABSOLUTE_BMK_DIR}/original"
+    if [ -d "$ORIGINAL_BMK_IMPL_DIR" ]; then
+        for BMK_SUBDIR in "${BMK_SUBDIRS[@]}"; do
+          # trim whitespace
+          BMK_SUBDIR=$(echo $BMK_SUBDIR | xargs)
 
-      [ -z ${BMK_SUBDIR} ] && continue
+          [ -z ${BMK_SUBDIR} ] && continue
 
-      ABSOLUTE_BMK_SUBDIR="${BMK_SOURCE_DIR}/${BMK}/${BMK_SUBDIR}"
-      echo "${ABSOLUTE_BMK_SUBDIR}" > $OUTS
+          ABSOLUTE_BMK_SUBDIR="${ORIGINAL_BMK_IMPL_DIR}/${BMK_SUBDIR}"
+          echo "${ABSOLUTE_BMK_SUBDIR}" > $OUTS
 
-      [ ! -d ${ABSOLUTE_BMK_SUBDIR} ] && continue
+          [ ! -d ${ABSOLUTE_BMK_SUBDIR} ] && continue
 
-      pushd "${BMK_TARGET_DIR}/${BMK}" > $OUTS
+          pushd "${BMK_TARGET_DIR}/${BMK}" > $OUTS
 
-      ln -sf ${ABSOLUTE_BMK_SUBDIR}
+          ln -sf ${ABSOLUTE_BMK_SUBDIR}
 
-      popd > $OUTS
-    done
+          popd > $OUTS
+        done
+    fi
+
+    # check for the abstract benchmark implementation
+    ABSTRACT_BMK_IMPL_DIR="${ABSOLUTE_BMK_DIR}/abstract"
+    if [ -d "$ABSTRACT_BMK_IMPL_DIR" ]; then
+        for BMK_SUBDIR in "${BMK_SUBDIRS[@]}"; do
+          # trim whitespace
+          BMK_SUBDIR=$(echo $BMK_SUBDIR | xargs)
+
+          [ -z ${BMK_SUBDIR} ] && continue
+
+          ABSOLUTE_BMK_SUBDIR="${ABSTRACT_BMK_IMPL_DIR}/${BMK_SUBDIR}"
+          echo "${ABSOLUTE_BMK_SUBDIR}" > $OUTS
+
+          [ ! -d ${ABSOLUTE_BMK_SUBDIR} ] && continue
+
+          pushd "${BMK_TARGET_DIR}/${BMK}" > $OUTS
+
+          ln -sf ${ABSOLUTE_BMK_SUBDIR}
+
+          popd > $OUTS
+        done
+    fi
+
   else
     # mode: remove symlinks
+    
+    ABSOLUTE_BMK_DIR="${BMK_TARGET_DIR}/${BMK}"
 
+    # check for the original benchmark implementation
+    ORIGINAL_BMK_IMPL_DIR="${ABSOLUTE_BMK_DIR}/original"
     for BMK_SUBDIR in "${BMK_SUBDIRS[@]}"; do
       # trim whitespace
       BMK_SUBDIR=$(echo $BMK_SUBDIR | xargs)
 
-      pushd "${BMK_TARGET_DIR}/${BMK}" > $OUTS
+      pushd "${ORIGINAL_BMK_IMPL_DIR}" > $OUTS
 
       [ -L "${BMK_SUBDIR}" ] && rm -f "${BMK_SUBDIR}"
 
       popd > $OUTS
     done
+
+    # check for the abstract benchmark implementation
+    ABSTRACT_BMK_IMPL_DIR="${ABSOLUTE_BMK_DIR}/abstract"
+    for BMK_SUBDIR in "${BMK_SUBDIRS[@]}"; do
+      # trim whitespace
+      BMK_SUBDIR=$(echo $BMK_SUBDIR | xargs)
+
+      pushd "${ABSTRACT_BMK_IMPL_DIR}" > $OUTS
+
+      [ -L "${BMK_SUBDIR}" ] && rm -f "${BMK_SUBDIR}"
+
+      popd > $OUTS
+    done
+
   fi
 done
 
-
 exit $?
-
