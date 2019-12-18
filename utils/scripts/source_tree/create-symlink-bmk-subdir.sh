@@ -150,7 +150,7 @@ for BMK in "${BENCHMARKS[@]}"; do
 
           [ ! -d ${ABSOLUTE_BMK_SUBDIR} ] && continue
 
-          pushd "${BMK_TARGET_DIR}/${BMK}" > $OUTS
+          pushd "${BMK_TARGET_DIR}/${BMK}/original" > $OUTS
 
           ln -sf ${ABSOLUTE_BMK_SUBDIR}
 
@@ -172,7 +172,7 @@ for BMK in "${BENCHMARKS[@]}"; do
 
           [ ! -d ${ABSOLUTE_BMK_SUBDIR} ] && continue
 
-          pushd "${BMK_TARGET_DIR}/${BMK}" > $OUTS
+          pushd "${BMK_TARGET_DIR}/${BMK}/abstract" > $OUTS
 
           ln -sf ${ABSOLUTE_BMK_SUBDIR}
 
@@ -182,7 +182,7 @@ for BMK in "${BENCHMARKS[@]}"; do
 
   else
     # mode: remove symlinks
-    
+   
     ABSOLUTE_BMK_DIR="${BMK_TARGET_DIR}/${BMK}"
 
     # check for the original benchmark implementation
