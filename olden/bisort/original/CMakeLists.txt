@@ -20,23 +20,25 @@ add_prefix(SOURCES "${HARNESS_BMK_SOURCE_SUBDIR}/" "${SOURCES}")
 list(APPEND SOURCES ${COMMON_SOURCES})
 list(APPEND SOURCES ${COMMON_RAND_SOURCES})
 
-add_executable(${BMK_PROJECT_NAME} ${SOURCES})
+set(TARGET_ORIGINAL ${BMK_PROJECT_NAME}_original)
 
-target_include_directories(${BMK_PROJECT_NAME} PUBLIC
+add_executable(${TARGET_ORIGINAL} ${SOURCES})
+
+target_include_directories(${TARGET_ORIGINAL} PUBLIC
   "${CMAKE_CURRENT_BINARY_DIR}")
 
-target_include_directories(${BMK_PROJECT_NAME} PUBLIC
+target_include_directories(${TARGET_ORIGINAL} PUBLIC
   "${CMAKE_CURRENT_SOURCE_DIR}/${HARNESS_BMK_SOURCE_SUBDIR}/")
 
-target_link_libraries(${BMK_PROJECT_NAME} m)
+target_link_libraries(${TARGET_ORIGINAL} m)
 
 
 # this property is required by our parasitic targets
-set_target_properties(${BMK_PROJECT_NAME} PROPERTIES LINKER_LANGUAGE C)
+set_target_properties(${TARGET_ORIGINAL} PROPERTIES LINKER_LANGUAGE C)
 
 # this property is used internally by our harness 
 # because benchmark names and their main targets have different names
-set_target_properties(${BMK_PROJECT_NAME} PROPERTIES BMK_NAME ${BMK_NAME})
+set_target_properties(${TARGET_ORIGINAL} PROPERTIES BMK_NAME ${BMK_NAME})
 
 #
 

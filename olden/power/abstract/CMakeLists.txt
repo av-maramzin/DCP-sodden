@@ -1,6 +1,6 @@
 # cmake file
 
-set(BMK_NAME "health")
+set(BMK_NAME "power")
 string(TOLOWER ${BMK_NAME} BMK_NAME_LOWER)
 set(BMK_PROJECT_NAME ${BMK_NAME_LOWER})
 
@@ -11,36 +11,39 @@ if(NOT ${hasSrcDir})
   return()
 endif()
 
+set(FP_TOLERANCE 0.00001)
+
 set(SOURCES
-  args.c                                       
-  health.c
-  list.c
-  poisson.c)
+  build.cpp                                       
+  compute.cpp
+  feasibility.cpp
+  power.cpp
+  power_original.cpp)
 
 add_prefix(SOURCES "${HARNESS_BMK_SOURCE_SUBDIR}/" "${SOURCES}")
 
 list(APPEND SOURCES ${COMMON_SOURCES})
 list(APPEND SOURCES ${COMMON_RAND_SOURCES})
 
-set(TARGET_ORIGINAL ${BMK_PROJECT_NAME}_original)
+set(TARGET_ABSTRACT ${BMK_PROJECT_NAME}_abstract)
 
-add_executable(${TARGET_ORIGINAL} ${SOURCES})
+add_executable(${TARGET_ABSTRACT} ${SOURCES})
 
-target_include_directories(${TARGET_ORIGINAL} PUBLIC
+target_include_directories(${TARGET_ABSTRACT} PUBLIC
   "${CMAKE_CURRENT_BINARY_DIR}")
 
-target_include_directories(${TARGET_ORIGINAL} PUBLIC
+target_include_directories(${TARGET_ABSTRACT} PUBLIC
   "${CMAKE_CURRENT_SOURCE_DIR}/${HARNESS_BMK_SOURCE_SUBDIR}/")
 
-target_link_libraries(${TARGET_ORIGINAL} m)
+target_link_libraries(${TARGET_ABSTRACT} m)
 
 
 # this property is required by our parasitic targets
-set_target_properties(${TARGET_ORIGINAL} PROPERTIES LINKER_LANGUAGE C)
+set_target_properties(${TARGET_ABSTRACT} PROPERTIES LINKER_LANGUAGE C)
 
 # this property is used internally by our harness 
 # because benchmark names and their main targets have different names
-set_target_properties(${TARGET_ORIGINAL} PROPERTIES BMK_NAME ${BMK_NAME})
+set_target_properties(${TARGET_ABSTRACT} PROPERTIES BMK_NAME ${BMK_NAME})
 
 #
 

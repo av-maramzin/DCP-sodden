@@ -63,7 +63,7 @@ add_definitions(-DTORONTO)
 
 # project options checks and processing
 
-configure_file("${CMAKE_SOURCE_DIR}/scripts/preamble/preamble.sh.in"
+configure_file("${CMAKE_CURRENT_SOURCE_DIR}/scripts/preamble/preamble.sh.in"
   "preamble/preamble.sh" @ONLY)
 
 if(HARNESS_USE_LLVM)

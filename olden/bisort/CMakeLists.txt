@@ -1,6 +1,6 @@
 # cmake file
 
-set(BMK_NAME "")
+set(BMK_NAME "bisort")
 string(TOLOWER ${BMK_NAME} BMK_NAME_LOWER)
 set(BMK_PROJECT_NAME ${BMK_NAME_LOWER})
 
