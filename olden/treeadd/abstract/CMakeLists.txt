@@ -1,6 +1,6 @@
 # cmake file
 
-set(BMK_NAME "power")
+set(BMK_NAME "treeadd")
 string(TOLOWER ${BMK_NAME} BMK_NAME_LOWER)
 set(BMK_PROJECT_NAME ${BMK_NAME_LOWER})
 
@@ -14,9 +14,8 @@ endif()
 set(FP_TOLERANCE 0.00001)
 
 set(SOURCES
-  build.cpp                                       
-  compute.cpp
-  main.cpp)
+  node.cpp                                       
+  args.cpp)
 
 add_prefix(SOURCES "${HARNESS_BMK_SOURCE_SUBDIR}/" "${SOURCES}")
 
