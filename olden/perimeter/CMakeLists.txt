@@ -11,8 +11,12 @@ else()
   return()
 endif()
 
-#if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/abstract")
-#    add_subdirectory(abstract)
-#endif()
+if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/abstract")
+    add_subdirectory(abstract)
+endif()
+
+if(IS_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/abstract_old")
+    add_subdirectory(abstract_old)
+endif()
 
 # end
