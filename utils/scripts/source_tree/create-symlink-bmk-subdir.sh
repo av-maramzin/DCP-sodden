@@ -194,7 +194,7 @@ for BMK in "${BENCHMARKS[@]}"; do
 
           [ ! -d ${ABSOLUTE_BMK_SUBDIR} ] && continue
 
-          pushd "${BMK_TARGET_DIR}/${BMK}/abstract" > $OUTS
+          pushd "${BMK_TARGET_DIR}/${BMK}/abstract_old" > $OUTS
 
           ln -sf ${ABSOLUTE_BMK_SUBDIR}
 
