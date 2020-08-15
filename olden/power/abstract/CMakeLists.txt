@@ -14,6 +14,7 @@ endif()
 set(FP_TOLERANCE 0.00001)
 
 set(SOURCES
+  args.cpp                                       
   build.cpp                                       
   compute.cpp
   main.cpp)

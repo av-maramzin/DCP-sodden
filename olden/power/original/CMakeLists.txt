@@ -14,6 +14,7 @@ endif()
 set(FP_TOLERANCE 0.00001)
 
 set(SOURCES
+  args.c                                       
   build.c                                       
   compute.c
   main.c)
